@@ -1,17 +1,13 @@
 import { ArrayNotEmpty, IsArray, IsNotEmpty, IsString } from 'class-validator';
-import { CreateFlavorDto } from './create-flavor.dto';
+import { CreateCoffeeDto } from './create-coffee.dto';
 
-export class CreateCoffeeDto {
+export class CreateFlavorDto {
   @IsNotEmpty()
   @IsString()
   readonly name: string;
 
-  @IsNotEmpty()
-  @IsString()
-  readonly brand: string;
-
   @IsNotEmpty({ each: true })
   @ArrayNotEmpty()
   @IsArray()
-  readonly flavors: CreateFlavorDto[];
+  readonly coffees: CreateCoffeeDto[];
 }

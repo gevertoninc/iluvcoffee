@@ -1,8 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { ConfigService, ConfigType } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Connection, QueryRunner, Repository } from 'typeorm';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 import { Event } from '../events/entities/event.entity';
+import { coffeesConfig } from './coffees.config';
+import { coffeesConstants } from './coffees.constants';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { CreateFlavorDto } from './dto/create-flavor.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
@@ -12,12 +15,35 @@ import { Flavor } from './entities/flavor.entity';
 @Injectable()
 export class CoffeesService {
   constructor(
+    private readonly configService: ConfigService,
     private readonly connection: Connection,
     @InjectRepository(Coffee)
     private readonly coffeeRepository: Repository<Coffee>,
     @InjectRepository(Flavor)
     private readonly flavorRepository: Repository<Flavor>,
-  ) {}
+    @Inject(coffeesConfig.KEY)
+    private coffeesConfiguration: ConfigType<typeof coffeesConfig>,
+    @Inject(coffeesConstants.COFFEE_BRANDS) coffeeBrands: string[],
+    @Inject(coffeesConstants.OTHER_COFFEE_BRANDS) otherCoffeeBrands: string[],
+  ) {
+    const databaseHost = this.configService.get<string>(
+      'DATABASE_HOST',
+      'localhost',
+    );
+    const databaseHostByDotNotation = this.configService.get<string>(
+      'database.host',
+      'localhost',
+    );
+    const coffeesConfigs = this.configService.get('coffees');
+    const foo = this.coffeesConfiguration.foo;
+
+    console.log(`Coffee brands: ${coffeeBrands}`);
+    console.log(`Other coffee brands: ${otherCoffeeBrands}`);
+    console.log(`Database host: ${databaseHost}`);
+    console.log(`Database host by dot notation: ${databaseHostByDotNotation}`);
+    console.log(`Coffees configs: ${JSON.stringify(coffeesConfigs)}`);
+    console.log(`Decent coffees configuration property: ${foo}`);
+  }
 
   static haveTheId(item: Coffee, id: number): boolean {
     return item.id === +id;

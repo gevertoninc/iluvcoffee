@@ -1,0 +1,7 @@
+const COFFEE_BRANDS = 'COFFEE_BRANDS';
+const CONNECTION = 'CONNECTION';
+const OTHER_COFFEE_BRANDS = 'OTHER_COFFEE_BRANDS';
+
+const coffeesConstants = { COFFEE_BRANDS, CONNECTION, OTHER_COFFEE_BRANDS };
+
+export { coffeesConstants };

@@ -8,3 +8,11 @@ services:
       - ${DATABASE_HOST_PORT:-5432}:${DATABASE_PORT:-5432}
     environment:
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-pass123}
+  test-db:
+    container_name: iluvcoffee-test-db
+    image: postgres
+    restart: unless-stopped
+    ports:
+      - ${DATABASE_HOST_PORT:-5432}:${DATABASE_PORT:-5432}
+    environment:
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-pass123}

@@ -1,5 +1,6 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { TimeoutInterceptor } from './common/interceptors/timeout.interceptor';
@@ -15,6 +16,16 @@ async function bootstrap() {
     new WrapResponseInterceptor(),
   );
   app.useGlobalPipes(new ValidationPipe(validationPipeOptions));
+
+  const options = new DocumentBuilder()
+    .setTitle('iluvcoffee')
+    .setDescription('Coffee application')
+    .setVersion('1.0')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, options);
+
+  SwaggerModule.setup('api', app, document);
 
   await app.listen(process.env.PORT);
 

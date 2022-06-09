@@ -13,6 +13,7 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
+import { ApiForbiddenResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { Protocol } from '../common/decorators/protocol.decorator';
 import { Public } from '../common/decorators/public.decorator';
@@ -23,11 +24,13 @@ import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 import { Coffee } from './entities/coffee.entity';
 
+@ApiTags('coffees')
 @UsePipes(ValidationPipe)
 @Controller('coffees')
 export class CoffeesController {
   constructor(private readonly coffeesService: CoffeesService) {}
 
+  @ApiForbiddenResponse({ description: 'Forbidden' })
   @Public()
   @UsePipes()
   @Get()

@@ -1,9 +1,10 @@
 version: '3'
 services:
   db:
+    container_name: iluvcoffee-db
     image: postgres
     restart: unless-stopped
     ports:
-      - 5432:5432
+      - ${DATABASE_HOST_PORT:-5432}:${DATABASE_PORT:-5432}
     environment:
-      POSTGRES_PASSWORD: pass123
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-pass123}
